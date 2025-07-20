@@ -1,0 +1,5 @@
+[
+  {"sensor_id": "T1", "temperature": 23.5},
+  {"sensor_id": "T2", "temperature": 25.1},
+  {"sensor_id": "T3", "temperature": 22.8}
+]
