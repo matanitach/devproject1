@@ -33,34 +33,16 @@ pipeline {
         stage('Code Quality Check') {
             steps {
                 script {
-                    echo 'Checking code quality...'
+                    echo 'Checking repository contents...'
                     sh '''
                         echo "📁 Repository contents:"
                         ls -la
 
-                        echo "🐍 Checking Python syntax..."
-                        python -m py_compile main.py
+                        echo "✅ Repository structure verified"
 
-                        if [ -f test_main.py ]; then
-                            python -m py_compile test_main.py
-                            echo "✅ All Python files have valid syntax"
-                        fi
-                    '''
-                }
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                script {
-                    echo 'Running unit tests...'
-                    sh '''
-                        if [ -f test_main.py ]; then
-                            echo "🧪 Running unit tests..."
-                            python test_main.py
-                        else
-                            echo "⚠️  No test file found (test_main.py), skipping tests"
-                        fi
+                        # Count Python files
+                        PYTHON_FILES=$(find . -name "*.py" | wc -l)
+                        echo "🐍 Found $PYTHON_FILES Python files"
                     '''
                 }
             }
@@ -88,9 +70,16 @@ pipeline {
                             pwd
                             ls -la
 
+                            echo "🐍 Checking Python syntax..."
+                            python -m py_compile main.py
+
                             echo "🧪 Running tests in container..."
                             if [ -f test_main.py ]; then
+                                python -m py_compile test_main.py
                                 python test_main.py
+                                echo "✅ All tests passed!"
+                            else
+                                echo "⚠️  No test file found"
                             fi
                         '''
                     }
