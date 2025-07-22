@@ -16,6 +16,6 @@ def main():
     data = read_sensor_data(file_path)
     avg_temp = average_temperature(data)
     print(f"Average Temperature: {avg_temp:.2f}°C")
-
+    print("test automation!")
 if __name__ == "__main__":
     main()
