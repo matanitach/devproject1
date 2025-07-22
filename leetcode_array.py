@@ -246,102 +246,103 @@ from typing import List, Optional
 
 ###################################################
 
-# Definition for singly-linked list.
-class ListNode:
-    def __init__(self, x):
-        self.val = x
-        self.next = None
-
-    def __repr__(self):
-        return str(self.val)
-
-
-class Solution:
-    def deleteNode(self, node):
-        """
-        מחיקת נוד ברשימה מקושרת - ללא גישה לראש!
-
-        הרעיון המרכזי:
-        מכיוון שאין לנו גישה לנוד הקודם, לא יכולים "לדלג" על הנוד.
-        במקום זה, נעתיק את הערך מהנוד הבא ונמחק את הנוד הבא!
-
-        Time: O(1), Space: O(1)
-        """
-        # העתק את הערך מהנוד הבא
-        node.val = node.next.val
-
-        # "מחק" את הנוד הבא על ידי דילוג עליו
-        node.next = node.next.next
-
-    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-        current = head
-
-
-def create_linked_list(values):
-    """יוצר רשימה מקושרת מרשימת ערכים"""
-    if not values:
-        return None
-
-    head = ListNode(values[0])
-    current = head
-
-    for val in values[1:]:
-        current.next = ListNode(val)
-        current = current.next
-
-    return head
-
-
-def find_node_with_value(head, target_value):
-    """מוצא נוד עם ערך מסוים"""
-    current = head
-    while current:
-        if current.val == target_value:
-            return current
-        current = current.next
-    return None
-
-
-def print_linked_list(head):
-    """מדפיס רשימה מקושרת בצורה יפה"""
-    if not head:
-        return "Empty list"
-
-    values = []
-    current = head
-    while current:
-        values.append(str(current.val))
-        current = current.next
-
-    return " -> ".join(values) + " -> None"
-
-
-
-
+# # Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+#
+#     def __repr__(self):
+#         return str(self.val)
+#
+#
+# class Solution:
+#     def deleteNode(self, node):
+#         """
+#         מחיקת נוד ברשימה מקושרת - ללא גישה לראש!
+#
+#         הרעיון המרכזי:
+#         מכיוון שאין לנו גישה לנוד הקודם, לא יכולים "לדלג" על הנוד.
+#         במקום זה, נעתיק את הערך מהנוד הבא ונמחק את הנוד הבא!
+#
+#         Time: O(1), Space: O(1)
+#         """
+#         # העתק את הערך מהנוד הבא
+#         node.val = node.next.val
+#
+#         # "מחק" את הנוד הבא על ידי דילוג עליו
+#         node.next = node.next.next
+#
+#     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+#         current = head
+#
+#
+# def create_linked_list(values):
+#     """יוצר רשימה מקושרת מרשימת ערכים"""
+#     if not values:
+#         return None
+#
+#     head = ListNode(values[0])
+#     current = head
+#
+#     for val in values[1:]:
+#         current.next = ListNode(val)
+#         current = current.next
+#
+#     return head
+#
+#
+# def find_node_with_value(head, target_value):
+#     """מוצא נוד עם ערך מסוים"""
+#     current = head
+#     while current:
+#         if current.val == target_value:
+#             return current
+#         current = current.next
+#     return None
+#
+#
+# def print_linked_list(head):
+#     """מדפיס רשימה מקושרת בצורה יפה"""
+#     if not head:
+#         return "Empty list"
+#
+#     values = []
+#     current = head
+#     while current:
+#         values.append(str(current.val))
+#         current = current.next
+#
+#     return " -> ".join(values) + " -> None"
+#
+#
+#
+#
 if __name__ == "__main__":
-    sol = Solution()
-    # יצירת רשימה מקושרת: 4 -> 5 -> 1 -> 9 -> None
-    values = [1,2,3,4,5]
-    n=2
-    head = create_linked_list(values)
-    sol.removeNthFromEnd(head,n)
-    print(f"רשימה מקורית: {print_linked_list(head)}")
-
-    # מציאת הנוד עם הערך 5
-    target_value = 5
-    node_to_delete = find_node_with_value(head, target_value)
-
-    if not node_to_delete:
-        print(f"נוד עם ערך {target_value} לא נמצא!")
-    else:
-        print(f"נוד למחיקה: {node_to_delete.val}")
-
-        # ביצוע המחיקה
-        sol = Solution()
-        sol.deleteNode(node_to_delete)
-
-        print(f"רשימה אחרי מחיקה: {print_linked_list(head)}")
-        print("\nהמחיקה הושלמה בהצלחה! ✅")
-
-    print("\n" + "=" * 50)
+    print("helloworld")
+#     sol = Solution()
+#     # יצירת רשימה מקושרת: 4 -> 5 -> 1 -> 9 -> None
+#     values = [1,2,3,4,5]
+#     n=2
+#     head = create_linked_list(values)
+#     sol.removeNthFromEnd(head,n)
+#     print(f"רשימה מקורית: {print_linked_list(head)}")
+#
+#     # מציאת הנוד עם הערך 5
+#     target_value = 5
+#     node_to_delete = find_node_with_value(head, target_value)
+#
+#     if not node_to_delete:
+#         print(f"נוד עם ערך {target_value} לא נמצא!")
+#     else:
+#         print(f"נוד למחיקה: {node_to_delete.val}")
+#
+#         # ביצוע המחיקה
+#         sol = Solution()
+#         sol.deleteNode(node_to_delete)
+#
+#         print(f"רשימה אחרי מחיקה: {print_linked_list(head)}")
+#         print("\nהמחיקה הושלמה בהצלחה! ✅")
+#
+#     print("\n" + "=" * 50)
 
