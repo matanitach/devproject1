@@ -20,26 +20,28 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 checkout scm
-                // Alternative if you need more control:
-                // checkout([
-                //     $class: 'GitSCM',
-                //     branches: [[name: '*/master']],
-                //     extensions: [[$class: 'WipeWorkspace']],
-                //     userRemoteConfigs: [[
-                //         url: 'https://github.com/matanitach/devproject1.git',
-                //         credentialsId: '8899c69f-9048-439e-8ba8-fbb0f8ae1b9d'
-                //     ]]
-                // ])
+            }
+        }
+
+        stage('Check Docker') {
+            steps {
+                script {
+                    sh 'docker --version'
+                    sh 'whoami'
+                    echo 'Docker is ready!'
+                }
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
+                    echo "Building Docker image: devproject1-image:${env.BUILD_NUMBER}"
                     // Build with build number tag for better tracking
                     def image = docker.build("devproject1-image:${env.BUILD_NUMBER}")
                     // Also tag as latest
                     image.tag('latest')
+                    echo 'Docker image built successfully!'
                 }
             }
         }
@@ -47,6 +49,7 @@ pipeline {
         stage('Run App in Container') {
             steps {
                 script {
+                    echo "Running application in container: devproject1-image:${env.BUILD_NUMBER}"
                     // Use the specific build image
                     docker.image("devproject1-image:${env.BUILD_NUMBER}").inside {
                         sh 'python main.py'
@@ -58,12 +61,20 @@ pipeline {
         stage('Cleanup Docker Images') {
             steps {
                 script {
-                    // Clean up old images to save disk space
+                    echo 'Cleaning up old Docker images...'
                     sh '''
                         # Remove dangling images
                         docker image prune -f
-                        # Optionally remove old build images (keep last 5)
-                        docker images devproject1-image --format "table {{.Tag}}" | grep -E '^[0-9]+$' | sort -n | head -n -5 | xargs -r docker rmi devproject1-image: || true
+
+                        # Get list of devproject1-image tags (numbers only), keep last 3
+                        OLD_IMAGES=$(docker images devproject1-image --format "{{.Repository}}:{{.Tag}}" | grep -E ':([0-9]+)$' | sort -t: -k2 -n | head -n -3)
+
+                        if [ ! -z "$OLD_IMAGES" ]; then
+                            echo "Removing old images: $OLD_IMAGES"
+                            echo "$OLD_IMAGES" | xargs docker rmi || true
+                        else
+                            echo "No old images to remove"
+                        fi
                     '''
                 }
             }
@@ -74,12 +85,13 @@ pipeline {
         always {
             // Clean workspace after build
             cleanWs()
+            echo 'Pipeline completed - workspace cleaned'
         }
         success {
-            echo 'Pipeline succeeded!'
+            echo '✅ Pipeline succeeded!'
         }
         failure {
-            echo 'Pipeline failed!'
+            echo '❌ Pipeline failed!'
         }
     }
 }
